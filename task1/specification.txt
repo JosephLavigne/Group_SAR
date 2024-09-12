@@ -1,0 +1,69 @@
+Specification:
+
+-------------
+Class Broker:
+-------------
+
+Gère connection des cannaux.
+
+--------------------------------------------------------------
+Broker(String name) : constructeur
+--------------------------------------------------------------
+Channel accept(int port)
+
+port : le port d'écoute à ouvrir
+Retourne le channel qui lie les ports ouverts des 2 tâches.
+Si il n'y a aucune demande sur le port, ne fait rien.
+--------------------------------------------------------------
+Channel connect(String name, int port)
+
+name: l'adresse du serveur auquel on veut se connecter
+port: le port de la tâche courante qu'on ouvre pour la connexion
+La fonction est blocante tant qu'aucune que la connexion n'est pas accepté par
+le serveur cible.
+--------------------------------------------------------------
+
+--------------
+Class Channel:
+--------------
+
+Permet de gérer l'échange de message dans entre les tasks.
+
+--------------------------------------------------------------
+int read(byte[] bytes, int offset, int length)
+
+bytes: le tableau de bits dans lequel mettre ce qu'on a lu. 
+Si le tableau n'est pas vide, remplie à partir du dernier bit remplie.
+Si on dépasse le tableau, retourne une exception.
+offset: Doit être >= 0.
+length: le nombre de bits maximum à lire. Doit être >= 0.
+
+Retourne le nombre de bits réellement lu du channel.
+--------------------------------------------------------------
+int write(byte[] bytes, int offset, int length)
+
+bytes: le tableau des bits qui contient ce qu'on veut envoyer dans le channel.
+offset: L'indice a partir duquel envoyer les bits dans le tableau bytes. Doit être >= 0.
+length: le nombre maximum de bit a envoyer. Doit être >= 0.
+
+Retourne le nombre de bit réellement envoyé.
+--------------------------------------------------------------
+void disconnect()
+
+Déconnecte le channel. Si le channel est déjà déconnecté, ne fait rien.
+--------------------------------------------------------------
+boolean disconnected()
+
+Retourne si le channel est actullement connecté ou non.
+--------------------------------------------------------------
+
+-----------
+Class Task:
+-----------
+Task(Broker b, Runnable r)
+Permet de lancer la tache dans un runnable.
+--------------------------------------------------------------
+static Broker getBroker()
+Retourne un Broken alloué.
+--------------------------------------------------------------
+
