@@ -1,25 +1,39 @@
 Specification:
 
+- Les tâches communiquent à travers des channels.
+- Une tâche connait au moins 1 broker.
+- Une tâche peut parler à plusieurs broker
+- Pour établir une connexion, il faut qu'il y ait un connect d'un côté et un accept de l'autre du broker.
+- 
+
 -------------
 Class Broker:
 -------------
 
-Gère connection des cannaux.
+- Gère et met en place les connections des cannaux.
+- Un broker par machine identifier par un nom.
+- Pour établir une connexion, le broker n°1 appelle connect et le broker n°2
+doit accepter la connexion.
+- Il peut y avoir plusieurs tâche dans un meme broker.
+- 2 tâches ne peuvent pas accepter sur un même port d'un même broker.
 
 --------------------------------------------------------------
 Broker(String name) : constructeur
+
+- Son nom permet d'identifier la tâche lors de la connexion. 
+- Le nom est unique.
 --------------------------------------------------------------
 Channel accept(int port)
 
-port : le port d'écoute à ouvrir
+port : le port d'écoute à ouvrir. La notion de port est unique par nom de broker.
 Retourne le channel qui lie les ports ouverts des 2 tâches.
 Si il n'y a aucune demande sur le port, ne fait rien.
 --------------------------------------------------------------
 Channel connect(String name, int port)
 
-name: l'adresse du serveur auquel on veut se connecter
+name: le nom du broker auquel on veut se connecter
 port: le port de la tâche courante qu'on ouvre pour la connexion
-La fonction est blocante tant qu'aucune que la connexion n'est pas accepté par
+La fonction est bloquante tant qu'aucune que la connexion n'est pas accepté par
 le serveur cible.
 --------------------------------------------------------------
 
@@ -28,6 +42,14 @@ Class Channel:
 --------------
 
 Permet de gérer l'échange de message dans entre les tasks.
+Il y a seul channel entre deux port d'un même nom de broker.
+
+Propriété du channel de communication:
+- FIFO lossles
+- Full duplex
+- Connexion par flux d'octet (TCP)
+- Les méthodes du channel ne sont pas thread safe. Il faut gérer la synchronisation au niveau au dessus du channel.
+- Le channel n'est pas posséder de manière unique par un thread.
 
 --------------------------------------------------------------
 int read(byte[] bytes, int offset, int length)
@@ -60,8 +82,11 @@ Retourne si le channel est actullement connecté ou non.
 -----------
 Class Task:
 -----------
+C'est la classe qui s'occupe des calculs et des traitements.
+
+--------------------------------------------------------------
 Task(Broker b, Runnable r)
-Permet de lancer la tache dans un runnable.
+Permet de créer une tâche.
 --------------------------------------------------------------
 static Broker getBroker()
 Retourne un Broken alloué.
