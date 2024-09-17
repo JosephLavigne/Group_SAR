@@ -18,6 +18,5 @@ public class Test {
 		
 		Task taskSender = new ConcreateTask(broker, senderRunnable);
 		taskSender.run();
-		
 	}
 }

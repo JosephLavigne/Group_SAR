@@ -17,5 +17,6 @@ public class SenderRunnable implements Runnable{
 			sendedBytes = this.channel.write(this.data, sendedBytes, this.data.length);
 		}
 		System.out.println("Message : " + this.data.toString() + " sended");
+		this.channel.disconnect();
 	}
 }
