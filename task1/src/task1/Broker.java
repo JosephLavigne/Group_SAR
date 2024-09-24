@@ -2,7 +2,7 @@ package task1;
 
 public abstract class Broker {
 	
-	protected String name;
+	public String name;
 
 	public Broker(String name) {
 		this.name = name;
