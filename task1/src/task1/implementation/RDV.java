@@ -40,7 +40,7 @@ public class RDV {
 			return connectChannel;
 		}
 	}
-	
+	 
 	public synchronized Channel accept(Broker b) {
 		if(this.bAccept == null) {
 			this.bAccept = b;
