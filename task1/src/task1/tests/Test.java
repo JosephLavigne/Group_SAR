@@ -1,6 +1,6 @@
 package task1.tests;
 import task1.*;
-import task1.implementation.ConcreateBroker;
+import task1.implementation.BrokerImplementation;
 import task1.implementation.ConcreateTask;
 
 public class Test {
@@ -9,7 +9,7 @@ public class Test {
 	}
 	
 	public static void testEchoServer() {
-		Broker broker = new ConcreateBroker("localhost");
+		Broker broker = new BrokerImplementation("localhost");
 		Channel server = broker.connect("localhost", 5555);
 		Channel client = broker.accept(5555);
 		byte[] data1 = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09};

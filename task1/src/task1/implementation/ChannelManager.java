@@ -1,8 +1,6 @@
 package task1.implementation;
 
-import task1.Broker;
 import task1.Channel;
-import task1.Task;
 
 public class ChannelManager {
 	private Channel client;

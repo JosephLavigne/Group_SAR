@@ -17,51 +17,41 @@ public class RDV {
 		this.clientInBuffer = new CircularBuffer(10);
 	}
 	
-	public synchronized Channel connect(Broker b) {
-		if(this.bConnect == null) {
-			this.bConnect = b;
-			Channel connectChannel = new ChannelImplementation(this.channelManager, this.clientInBuffer, this.clientOutBuffer);
-			this.channelManager.setClient(connectChannel);
-			notifyAll();
-			return connectChannel;
+	public Channel connect(Broker b, int port) {
+		this.bConnect = b;
+		Channel connectChannel = new ChannelImplementation(this.channelManager, this.clientInBuffer, this.clientOutBuffer, port, b.name);
+		this.channelManager.setClient(connectChannel);
+		if(this.bAccept != null) {
+			notify();
 		}
 		else {
 			while(this.bAccept == null) {
 				try{
 					wait();
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} 
-			this.bConnect = b;
-			Channel connectChannel = new ChannelImplementation(this.channelManager, this.clientInBuffer, this.clientOutBuffer);
-			this.channelManager.setClient(connectChannel);
-			return connectChannel;
+			}
 		}
+		return connectChannel;
 	}
-	 
-	public synchronized Channel accept(Broker b) {
-		if(this.bAccept == null) {
-			this.bAccept = b;
-			Channel acceptChannel = new ChannelImplementation(this.channelManager, this.clientOutBuffer, this.clientInBuffer);
-			this.channelManager.setServeur(acceptChannel);
-			notifyAll();
-			return acceptChannel;
+	
+	public Channel accept(Broker b, int port) {
+		this.bAccept = b;
+		Channel acceptChannel = new ChannelImplementation(this.channelManager, this.clientOutBuffer, this.clientInBuffer, port, b.name);
+		this.channelManager.setClient(acceptChannel);
+		if(this.bConnect != null) {
+			notify();
 		}
 		else {
 			while(this.bConnect == null) {
 				try{
 					wait();
-				}
-				catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} 
-			this.bAccept = b;
-			Channel connectChannel = new ChannelImplementation(this.channelManager, this.clientInBuffer, this.clientOutBuffer);
-			this.channelManager.setClient(connectChannel);
-			return connectChannel;
+			}
 		}
+		return acceptChannel;
 	}
 }

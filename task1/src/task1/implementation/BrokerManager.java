@@ -13,7 +13,7 @@ public class BrokerManager {
 	}
 	
 	public synchronized Broker createBroker(String name) {
-		Broker newBroker = new ConcreateBroker(name, this);
+		Broker newBroker = new BrokerImplementation(name, this);
 		this.brokerList.add(newBroker);
 		return newBroker;
 	}
