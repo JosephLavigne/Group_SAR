@@ -1,0 +1,28 @@
+## QueueBroker
+
+Les QueueBrokers sont crées à partir d'un nom. Deux QueuesBrokers peuvent communiquer ensemble à l'aide de MessageQueue.
+
+# Connexion 
+
+Pour avoir une connexion entre deux QueueBrokers, il est nécessaire d'avoir un bind et un connect sur le même port par deux QueueBrokers différents.
+La méthode connect prend en argument le nom du QueueBrokers distant, le port sur lequel il souhaite se connecter et pour finir un ConnectListener.
+Le connectListener sera notifié lorsque le QueueBroker distant aura bind ce même port. cela indiquera que celui-ci à accepter la connexion. 
+Le bind fonctionne comme un accept dans les anciennes specs. La methode unbind permet de pour rybind le port avec un nouvel AcceptListener.
+
+
+##Message Queue
+
+Les messages Queues permettent d'avoir un protocol entre les QueueBrokers qui sont entrain de communiquer ensemble.
+Les messages peuvent être envoyé dans les deux sens le canal de connexion est full-duplex.
+
+# Send
+
+L'envoie d'information par la méthode send se fait message par message et non bytes par bytes. La méthode n'est pas bloquante. Elle donne juste une acceptation d'envoie, à la fin de la méthode le message n'est pas encore envoyé. Il est nécessaire d'attendre un l'appel au listener sent pour pouvoir réutiliser ce message.
+
+
+# Received
+
+Received est appeler au moment où un message a été envoyé par le QueueBroker distant (fonctionne comme une notification).
+
+
+

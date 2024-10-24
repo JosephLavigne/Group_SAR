@@ -1,0 +1,10 @@
+Contrainte : 
+- Utilisé les brokers de la task 1
+- Utilisé les channel de la task 1
+
+
+Les queues Brokers sont crée à partir de broker s'est grace à ces brokers que les RDV seront effectués. Ce qui veut dire que les brokers s'occupe de la partie accepte/connection pour connecté deux queues Brokers ensemble 
+
+Les messages queues utiliseront les channels des brokers de connections pour communiquer sous forme de message. Il faut donc que les messages queues gèrent le fonctionnement des messages car les channels utlisent des communications par bytes. Il faut donc que les 4 premiers octets du messages soit utilisé pour indiqué la taille complète du message. 
+
+// Voir Image

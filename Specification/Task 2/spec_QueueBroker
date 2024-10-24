@@ -1,0 +1,59 @@
+Les QueueBroker et les MessagesQueues sont très proches (au niveau spec) des Brokers et des Channels.
+Par conséquent, dans cette specification, seulement les différences seront indiqués. 
+Certaines informations importantes seront redondantes pour ne pas oublier celles-ci.
+
+
+# QueueBroker
+
+Les QueueBrokers sont construit à l'aide un Broker "classic". Le nom de se QueueBroker sera donc le nom donné par ce Broker "classic". 
+Les QueueBrokers possèdent leur propre accept et connect car ceci n'utilise pas les Channels mais les MessageQueues.
+La communication entre QueueBrokers se fait par le biai de MessageQueues.
+
+
+# Connexion
+
+Pour avoir une connexion il faut avoir un connect et un accept sur le même port par deux QueueBrokers différents. Le nom donné au MessageQueue est le nom du QueueBroker en ligne ("Remote")
+Rien ne l'empeche mais la spec ne prend pas en compte la connexion entre un QueueBroker et un Broker. 
+C'est-à-dire qu'un connect par un QueueBroker et un accept par un Broker, n'est pas pris en compte par la spec. Par conséquent, il ne faut pas le faire. 
+Lorsque qu'un connexion est établi, alors un MessageQueue est renvoyé à chaqu'un des QueueBrokers afin que communiquer entre eux sur le port donné lors de la connexion, la connexion est full-duplex, c'est à dire qu'elle est dans les deux sens. 
+
+
+# Send
+
+L'utilisateur donne un tableau de bytes avec le message à envoyé. L'envoie de message ne se fait pas byte/byte mais par paquet de byte. Il n'est donc pas nécessaire de donnée le nombre de byte envoyé car l'utilisateur sais déjà combien de bytes fait son message envoyé. 
+
+Design note : A chaque send, le QueueBroker doit savoir qu'il recoit un message
+
+
+# Receive
+
+La reception d'un message est un paquet de bytes qui sont stocker dans un tableau de byte qui sont renvoyé à l'utilisateur. Pour faire cette fonction un message doit être en attente de reception sinon il n'y a pas d'attente de message 
+
+
+# Déconnexion
+
+A MessageQueue peut être déconnecté à tout moment, d'un côté comme de l'autre. Il faut donc un protocole asynchrone pour déconnecter un canal. La fonction send ne peut donc plus être utilisé par les deux QueueBrokers après qu'un des MessageQueues s'est déconnecter mais receive et toujours utilisable par le MessageQueues qui n'est pas déconnecter. 
+
+
+# QueueBrokers and Multi-tasking
+
+Il est important de comprendre quelle partie doit être géré correctement avec le multi-tasking. 
+
+
+Puisqu'une connexion est bloquante, une tâche ne peut pas essayer de se connecter au même nom et au même port simultanément, mais plusieurs tâches peuvent le faire.
+nom et le même port simultanément, mais plusieurs tâches peuvent le faire. De même, seule
+une seule tâche peut accepter un port donné sur un courtier donné. Mais différentes tâches 
+différentes tâches sur différents courtiers peuvent accepter le même numéro de port. Et bien sûr, plusieurs tâches peuvent accepter sur un port donné un courtier donné. 
+bien sûr, plusieurs tâches peuvent accepter sur différents ports d'un même courtier.
+courtier.
+
+Comme les opérations « send » et « receive » peuvent bloquer la tâche appelante, il est important de préciser ce qui se passe si la file d'attente de messages est fermée,
+il est important de préciser ce qui se passe si la file d'attente des messages est fermée alors que les tâches sont bloquées.
+alors que des tâches sont bloquées. Les opérations bloquées lèvent une exception (ClosedException). Cela doit se produire lorsque la file d'attente des messages est fermée d'un côté ou de l'autre. Cela signifie qu'il n'y a aucun risque à ce qu'une tâche ferme une file d'attente de messages du même côté que celui où une autre tâche est actuellement bloquée.
+
+Nous savons que chaque tâche est liée à un courtier, par son constructeur. Mais un courtier peut être utilisé par plusieurs tâches. Par conséquent, les courtiers peuvent être partagés entre les tâches, et les courtiers doivent donc être sûrs pour les threads, en utilisant une synchronisation interne appropriée.
+
+Les files de messages sont différentes en raison de la nature du flux d'octets et du fait que les opérations « send » et « receive » ne peuvent fonctionner que partiellement. Pour cette raison, les opérations synchronisées n'aideraient pas plusieurs tâches à envoyer ou recevoir simultanément. En effet, il existe une notion de message et ces deux méthodes doivent donc être sûres pour les threads
+
+Pourtant, plusieurs tâches peuvent utiliser la même file d'attente de messages. Un exemple classique est celui d'une tâche d'envoi et d'une tâche de réception, en raison de la nature bloquante des méthodes « send » et « receive ». De même, plusieurs tâches d'envoi peuvent envoyer des messages via la même file d'attente de messages si elles sont correctement synchronisées.
+
