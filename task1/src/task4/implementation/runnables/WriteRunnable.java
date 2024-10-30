@@ -1,7 +1,9 @@
-package task4.implementation;
+package task4.implementation.runnables;
 
-import task4.Channel;
-import task4.Channel.WriteListener;
+import task4.abs.Channel;
+import task4.abs.Channel.WriteListener;
+import task4.implementation.ChannelImplementation;
+import task4.implementation.CircularBuffer;
 
 public class WriteRunnable implements Runnable{
 	

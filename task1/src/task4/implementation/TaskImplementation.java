@@ -2,8 +2,10 @@ package task4.implementation;
 
 import java.util.HashSet;
 
-import task4.Broker;
-import task4.Task;
+import task4.abs.Broker;
+import task4.abs.Task;
+import task4.implementation.eventspump.Event;
+import task4.implementation.eventspump.EventPump;
 
 public class TaskImplementation extends Task{
 	public static TaskImplementation currentTask = null;

@@ -1,7 +1,8 @@
 package task4.implementation;
 
-import task4.Channel;
-import task4.Task;
+import task4.abs.Channel;
+import task4.abs.Task;
+import task4.implementation.runnables.WriteRunnable;
 
 public class ChannelImplementation extends Channel{
 	public ChannelManager channelManager;

@@ -3,7 +3,7 @@ package task4.implementation;
 import java.util.HashMap;
 import java.util.Map;
 
-import task4.Broker;
+import task4.abs.Broker;
 
 public class BrokerManager {
 	private Map<String, Broker> brokerMap;

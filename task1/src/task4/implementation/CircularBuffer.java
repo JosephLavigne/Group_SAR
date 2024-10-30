@@ -18,7 +18,7 @@ package task4.implementation;
  *      Author: Pr. Olivier Gruber <olivier dot gruber at acm dot org>
  */
 
-class CircularBuffer {
+public class CircularBuffer {
 
 	int m_capacity;
 	int m_start, m_end;

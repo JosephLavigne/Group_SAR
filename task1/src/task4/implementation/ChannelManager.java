@@ -1,7 +1,7 @@
 package task4.implementation;
 
-import task4.Channel;
-import task4.Channel.DisconnectListener;
+import task4.abs.Channel;
+import task4.abs.Channel.DisconnectListener;
 
 public class ChannelManager {
 	private ChannelImplementation connectChannel;

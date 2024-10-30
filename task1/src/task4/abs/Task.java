@@ -1,4 +1,4 @@
-package task4;
+package task4.abs;
 
 public abstract class Task extends Thread{
 

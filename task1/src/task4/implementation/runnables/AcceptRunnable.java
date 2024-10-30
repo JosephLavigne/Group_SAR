@@ -1,4 +1,7 @@
-package task4.implementation;
+package task4.implementation.runnables;
+
+import task4.implementation.RDV;
+import task4.implementation.TaskImplementation;
 
 public class AcceptRunnable implements Runnable {
 	

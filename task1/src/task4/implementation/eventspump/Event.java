@@ -1,4 +1,6 @@
-package task4.implementation;
+package task4.implementation.eventspump;
+
+import task4.implementation.TaskImplementation;
 
 public class Event implements Runnable {
 	TaskImplementation TaskImplementation;

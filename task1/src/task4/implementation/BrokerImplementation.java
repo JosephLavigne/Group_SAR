@@ -3,10 +3,11 @@ package task4.implementation;
 import java.util.HashMap;
 import java.util.Map;
 
-import task4.Broker;
-import task4.Channel;
-import task4.Task;
+import task4.abs.Broker;
+import task4.abs.Channel;
+import task4.abs.Task;
 import task4.implementation.BrokerImplementation.ConnectListener;
+import task4.implementation.runnables.ConnectRunnable;
 
 public class BrokerImplementation extends Broker{
 	

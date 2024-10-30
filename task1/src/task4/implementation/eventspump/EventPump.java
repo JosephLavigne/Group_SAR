@@ -1,9 +1,10 @@
-package task4.implementation;
+package task4.implementation.eventspump;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
-import task4.Task;
+import task4.abs.Task;
+import task4.implementation.TaskImplementation;
 
 public class EventPump extends Thread{
 	Event currentEvent;
