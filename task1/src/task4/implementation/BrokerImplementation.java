@@ -51,14 +51,14 @@ public class BrokerImplementation extends Broker{
 	}
 
 	@Override
-	public boolean connect(String name, int port, ConnectListener listener) {
+	public boolean connect(String name, int port, ConnectListener connectlistener) {
 		// TODO Auto-generated method stub
 		Broker brokerToConnect = this.brokerManager.getBroker(name);
 		if (brokerToConnect == null) {
 			return false;
 		}
-		Task task = new TaskImplementation();
-		task.postRunnable(new ConnectRunnable(port, listener, brokerToConnect));
+		TaskImplementation task = new TaskImplementation("");
+		task.postRunnable(new ConnectRunnable(port, connectlistener, brokerToConnect));
 		return true;
 	}
 	

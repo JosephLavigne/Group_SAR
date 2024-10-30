@@ -47,7 +47,7 @@ public class ChannelImplementation extends Channel{
 		// TODO Auto-generated method stub
 		boolean disconnected = this.isDisconnected;
 		ChannelImplementation remoteChannel = this.channelManager.getRemoteChannel(this);
-		Task disconnectTask = new TaskImplementation().postRunnable(new Runnable() {
+		Task disconnectTask = new TaskImplementation("").postRunnable(new Runnable() {
 			@Override
 			public void run() {
 				disconnected = true;
