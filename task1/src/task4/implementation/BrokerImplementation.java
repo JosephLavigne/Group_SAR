@@ -55,10 +55,10 @@ public class BrokerImplementation extends Broker{
 		// TODO Auto-generated method stub
 		Broker brokerToConnect = this.brokerManager.getBroker(name);
 		if (brokerToConnect == null) {
-			return null;
+			return false;
 		}
-		Task task = new Task();
-		task.post(new ConnectRunnable(port, listener, brokerToConnect));
+		Task task = new TaskImplementation();
+		task.postRunnable(new ConnectRunnable(port, listener, brokerToConnect));
 		return true;
 	}
 	

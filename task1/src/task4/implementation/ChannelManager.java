@@ -1,6 +1,7 @@
 package task4.implementation;
 
 import task4.Channel;
+import task4.Channel.DisconnectListener;
 
 public class ChannelManager {
 	private ChannelImplementation connectChannel;
@@ -23,8 +24,14 @@ public class ChannelManager {
 	}
 	
 	public void disconnect() {
-		this.acceptChannel.disconnect();
-		this.connectChannel.disconnect();
+		DisconnectListener disconnectListener = new DisconnectListener() {
+			@Override
+			public void disconnected() {
+				//nothing
+			}
+		};
+		this.acceptChannel.disconnect(disconnectListener);
+		this.connectChannel.disconnect(disconnectListener);
 	}
 	
 	public ChannelImplementation getRemoteChannel(Channel channel) {

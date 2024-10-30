@@ -11,7 +11,7 @@ public class RDV {
 	private Task task;
 	private AcceptRunnable acceptRunnable;
 	private AcceptListener acceptListener;
-	private boolean hasAcceptArrived;
+	public boolean hasAcceptArrived;
 	
 	public RDV(AcceptListener acceptListener, int port) {
 		this.channelManager = null;
