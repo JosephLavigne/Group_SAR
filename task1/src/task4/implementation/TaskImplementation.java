@@ -1,7 +1,7 @@
-package task1.implementation;
+package task4.implementation;
 
-import task1.Broker;
-import task1.Task;
+import task4.Broker;
+import task4.Task;
 
 public class ConcreateTask extends Task{
 
