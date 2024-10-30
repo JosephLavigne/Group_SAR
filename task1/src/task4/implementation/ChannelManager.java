@@ -3,28 +3,27 @@ package task4.implementation;
 import task4.Channel;
 
 public class ChannelManager {
-	private Channel client;
-	private Channel serveur;
+	private Channel connectChannel;
+	private Channel acceptChannel;
+	
+	private CircularBuffer acceptInBuffer;
+	private CircularBuffer acceptOutBuffer;
 	
 	public ChannelManager() {
-		this.client = null;
-		this.serveur = null;
+		this.connectChannel = new Channel(this, acceptInBuffer, acceptOutBuffer);
+		this.acceptChannel = new Channel(this, acceptOutBuffer, acceptInBuffer);;
 	}
 	
-	public void setClient(Channel client) {
-		this.client = client;
+	public Channel getConnectChannel() {
+		return this.connectChannel;
 	}
 	
-	public void setServeur(Channel serveur) {
-		this.serveur = serveur;
+	public Channel getAcceptChannel() {
+		return this.acceptChannel;
 	}
 	
-	public void disconnect(Channel disconnectedChannel) {
-		if(disconnectedChannel == client) {
-			this.serveur.disconnect();
-		}
-		else {
-			this.client.disconnect();
-		}
+	public void disconnect() {
+		this.acceptChannel.disconnect();
+		this.connectChannel.disconnect();
 	}
 }

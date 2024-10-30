@@ -3,9 +3,9 @@ package task4.implementation;
 import task4.Broker;
 import task4.Task;
 
-public class ConcreateTask extends Task{
+public class TaskImplementation extends Task{
 
-	public ConcreateTask(Broker b, Runnable r) {
+	public TaskImplementation(Broker b, Runnable r) {
 		super(b, r);
 	}
 	

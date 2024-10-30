@@ -1,57 +1,48 @@
 package task4.implementation;
 
 import task4.Broker;
-import task4.Channel;
+import task4.Task;
+import task4.implementation.BrokerImplementation.AcceptListener;
+import task4.implementation.BrokerImplementation.ConnectListener;
 
 public class RDV {
-	private Broker bAccept, bConnect;
 	private ChannelManager channelManager;
-	private CircularBuffer clientInBuffer;
-	private CircularBuffer clientOutBuffer;
 	
-	public RDV() {
-		this.bAccept = null;
-		this.bConnect = null;
-		this.channelManager = new ChannelManager();
-		this.clientOutBuffer = new CircularBuffer(10);
-		this.clientInBuffer = new CircularBuffer(10);
+	private Task task;
+	private AcceptRunnable acceptRunnable;
+	private AcceptListener acceptListener;
+	private boolean hasAcceptArrived;
+	
+	public RDV(AcceptListener acceptListener, int port) {
+		this.channelManager = null;
+		this.task = new TaskImplementation();
+		this.acceptListener = acceptListener;
+		this.acceptRunnable = new AcceptRunnable(this);
+		this.hasAcceptArrived = false;
 	}
 	
-	public Channel connect(Broker b, int port) {
-		this.bConnect = b;
-		Channel connectChannel = new ChannelImplementation(this.channelManager, this.clientInBuffer, this.clientOutBuffer, port, b.name);
-		this.channelManager.setClient(connectChannel);
-		if(this.bAccept != null) {
-			notify();
-		}
-		else {
-			while(this.bAccept == null) {
-				try{
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return connectChannel;
+	public void bind() {
+		task.pushRunnable(acceptRunnable);
 	}
 	
-	public Channel accept(Broker b, int port) {
-		this.bAccept = b;
-		Channel acceptChannel = new ChannelImplementation(this.channelManager, this.clientOutBuffer, this.clientInBuffer, port, b.name);
-		this.channelManager.setClient(acceptChannel);
-		if(this.bConnect != null) {
-			notify();
+	public void disconnect() {
+		if (this.channelManager != null) {
+			this.channelManager.disconnect();
 		}
-		else {
-			while(this.bConnect == null) {
-				try{
-					wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+		task.finish();
+	}
+	
+	public void accept() {
+		this.acceptListener.accepted(this.channelManager.getAcceptChannel());
+	}
+	
+	public void acceptConnect(ConnectListener connectListener) {
+		if (this.hasAcceptArrived) {
+			connectListener.refused();
+		} else {
+			this.hasAcceptArrived = true;
+			this.channelManager = new ChannelManager();
+			connectListener.connected(this.channelManager.getConnectChannel());
 		}
-		return acceptChannel;
 	}
 }
