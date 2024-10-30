@@ -6,7 +6,7 @@ import task4.Broker;
 import task4.Task;
 
 public class TaskImplementation extends Task{
-	public static Task currentTask = null;
+	public static TaskImplementation currentTask = null;
 	
 	private boolean isActive;
 	public HashSet<Event> events;
@@ -29,7 +29,7 @@ public class TaskImplementation extends Task{
 		eventPump.post(e);
 	}
 	
-	public static Task task() {
+	public static TaskImplementation getTask() {
 		return currentTask;
 	}
 	

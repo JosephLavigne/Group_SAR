@@ -1,24 +1,25 @@
 package task4.implementation;
 
-import task4.Broker;
-import task4.Task;
 import task4.implementation.BrokerImplementation.AcceptListener;
 import task4.implementation.BrokerImplementation.ConnectListener;
 
 public class RDV {
 	private ChannelManager channelManager;
 	
-	private Task task;
+	private TaskImplementation task;
 	private AcceptRunnable acceptRunnable;
 	private AcceptListener acceptListener;
 	public boolean hasAcceptArrived;
+	//For debug
+	private int port;
 	
 	public RDV(AcceptListener acceptListener, int port) {
 		this.channelManager = null;
-		this.task = new TaskImplementation();
+		this.task = new TaskImplementation("Task : Accept on port : " + port);
 		this.acceptListener = acceptListener;
 		this.acceptRunnable = new AcceptRunnable(this);
 		this.hasAcceptArrived = false;
+		this.port = port;
 	}
 	
 	public void bind() {
@@ -29,7 +30,7 @@ public class RDV {
 		if (this.channelManager != null) {
 			this.channelManager.disconnect();
 		}
-		task.finish();
+		task.kill();
 	}
 	
 	public void accept() {

@@ -32,8 +32,9 @@ public class BrokerImplementation extends Broker{
 		if (rdv == null) {
 			return false;
 		}
-		this.bindMap.kill();
+		rdv.disconnect();
 		this.bindMap.remove(port);
+		return true;
 	}
 	
 	@Override

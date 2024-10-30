@@ -1,8 +1,6 @@
 package task4.implementation;
 
-import task4.Task;
-
-public class AcceptRunnable implements Runnable{
+public class AcceptRunnable implements Runnable {
 	
 	private RDV rdv;
 
@@ -14,7 +12,7 @@ public class AcceptRunnable implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		if (!this.rdv.hasAcceptArrived) {
-			Task.getTask().postRunnable(this);
+			TaskImplementation.getTask().postRunnable(this);
 			return;
 		}
 		this.rdv.accept();
