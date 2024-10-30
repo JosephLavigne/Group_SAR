@@ -23,7 +23,7 @@ public class RDV {
 	}
 	
 	public void bind() {
-		task.pushRunnable(acceptRunnable);
+		task.postRunnable(acceptRunnable);
 	}
 	
 	public void disconnect() {

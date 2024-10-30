@@ -1,32 +1,36 @@
 package task4.implementation;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import task4.Broker;
 
 public class BrokerManager {
-	private List<Broker> brokerList;
+	private Map<String, Broker> brokerMap;
 	
 	public BrokerManager() {
-		this.brokerList = new ArrayList<Broker>();
+		this.brokerMap = new HashMap<String, Broker>();
 	}
 	
-	public synchronized Broker createBroker(String name) {
-		Broker newBroker = new BrokerImplementation(name, this);
-		this.brokerList.add(newBroker);
-		return newBroker;
+	public synchronized void addBroker(String name, Broker broker) {
+		Broker brokerWithSameName = this.brokerMap.get(name);
+		if(brokerWithSameName != null) {
+			throw new IllegalArgumentException("Broker with the name " + name + " already exists in this broker manager.");
+		}
+		else {
+			synchronized(this.brokerMap) {
+				this.brokerMap.put(name, broker);
+			}
+		}
+	}
+	
+	public synchronized Broker removeBroker(String name) {
+		synchronized(this.brokerMap) {
+			return this.brokerMap.remove(name);
+		}
 	}
 	
 	public synchronized Broker getBroker(String name) {
-		Iterator<Broker> iterator = brokerList.iterator();
-		while(iterator.hasNext()) {
-			Broker currentBroker = iterator.next();
-			if (currentBroker.name == name) {
-				return currentBroker;
-			}
-		}
-		return null;
+		return this.brokerMap.get(name);
 	}
 }

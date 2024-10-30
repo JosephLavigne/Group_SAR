@@ -10,7 +10,7 @@ public class ChannelImplementation extends Channel{
 	private boolean isDisconnected;
 	private boolean dangling;
 	
-	private Task writerTask;
+	private TaskImplementation writerTask;
 	
 	public ChannelImplementation(ChannelManager channelManager, CircularBuffer in, CircularBuffer out) {
 		this.channelManager = channelManager;
@@ -18,7 +18,7 @@ public class ChannelImplementation extends Channel{
 		this.outBuffer = out;
 		this.isDisconnected = false;
 		this.dangling = false;
-		this.writerTask = new TaskImplementation();
+		this.writerTask = new TaskImplementation("Task Writer");
 	}
 
 	@Override
@@ -38,19 +38,19 @@ public class ChannelImplementation extends Channel{
 		if (isDisconnected || this.readListener == null || dangling == true) {
 			return false;
 		}
-		this.writerTask.pushRunnable(new WriteRunnable(bytes, offset, length, this.outBuffer, this, this.readListener));
+		this.writerTask.postRunnable(new WriteRunnable(bytes, offset, length, this.outBuffer, this, writeListener));
 		return true;
 	}
 
 	@Override
 	public void disconnect(DisconnectListener disconnectListener) {
 		// TODO Auto-generated method stub
-		boolean disconnected = this.isDisconnected;
 		ChannelImplementation remoteChannel = this.channelManager.getRemoteChannel(this);
-		Task disconnectTask = new TaskImplementation("").postRunnable(new Runnable() {
+		TaskImplementation disconnectTask = new TaskImplementation("Disconnect Task");
+		disconnectTask.postRunnable(new Runnable() {
 			@Override
 			public void run() {
-				disconnected = true;
+				isDisconnected = true;
 				remoteChannel.dangling = true;
 
 				if (disconnectListener != null) {
