@@ -17,9 +17,9 @@ public abstract class Channel {
 		void disconnected();
 	}
 	
-	public abstract int read(byte[] bytes, int offset, int length) throws ChannelDisconnectedException;
+	public abstract int read(byte[] bytes, int offset, int length);
 	
-	public abstract boolean write(byte[] bytes, int offset, int length, WriteListener writeListener) throws ChannelDisconnectedException;
+	public abstract boolean write(byte[] bytes, int offset, int length, WriteListener writeListener);
 	
 	public abstract void disconnect(DisconnectListener disconnectListener);
 	

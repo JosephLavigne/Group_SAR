@@ -4,20 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import task4.abs.Broker;
-import task4.abs.Channel;
-import task4.abs.Task;
-import task4.implementation.BrokerImplementation.ConnectListener;
 import task4.implementation.runnables.ConnectRunnable;
 
 public class BrokerImplementation extends Broker{
 	
-	public interface AcceptListener {
-		void accepted(Channel queue);
-	}
-	public interface ConnectListener {
-		void refused();
-		void connected(Channel queue);
-	}
 	private BrokerManager brokerManager;
 	private Map<Integer, RDV> bindMap;
 	

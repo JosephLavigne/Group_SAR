@@ -1,7 +1,7 @@
 package task4.implementation;
 
-import task4.implementation.BrokerImplementation.AcceptListener;
-import task4.implementation.BrokerImplementation.ConnectListener;
+import task4.abs.Broker.AcceptListener;
+import task4.abs.Broker.ConnectListener;
 import task4.implementation.runnables.AcceptRunnable;
 
 public class RDV {

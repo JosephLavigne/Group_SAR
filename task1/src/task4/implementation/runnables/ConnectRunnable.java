@@ -1,8 +1,7 @@
 package task4.implementation.runnables;
 
-import task4.abs.Broker;
+import task4.abs.Broker.ConnectListener;
 import task4.implementation.BrokerImplementation;
-import task4.implementation.BrokerImplementation.ConnectListener;
 
 public class ConnectRunnable implements Runnable{
 	

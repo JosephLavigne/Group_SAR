@@ -1,9 +1,14 @@
 package task4.abs;
 
-import task4.implementation.BrokerImplementation.AcceptListener;
-import task4.implementation.BrokerImplementation.ConnectListener;
-
 public abstract class Broker {
+	
+	public interface AcceptListener {
+		void accepted(Channel queue);
+	}
+	public interface ConnectListener {
+		void refused();
+		void connected(Channel queue);
+	}
 	
 	public String name;
 
